@@ -1,7 +1,7 @@
 import math as ma
 from random import randint
 import copy
-matrix_size = 11
+matrix_size = 30
 
 def calc_matrix_type(matrix): # calculate the type of the matrix
     type = {"row": 0, "column": 0} # initialize the type
@@ -44,8 +44,42 @@ def calc_determinant(matrix): # calculate the determinant of the matrix
     if len(matrix) == 2: # calculate the determinant of a 2x2 matrix
         return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
     det = 0
-    for i in range(len(matrix)): # calculate the determinant with the laplace expansion
-        det += matrix[0][i] * ma.pow(-1, i) * calc_determinant([row[:i] + row[i + 1:] for row in matrix[1:]])
+    # for i in range(len(matrix)): # calculate the determinant with the laplace expansion
+    #     det += matrix[0][i] * ma.pow(-1, i) * calc_determinant([row[:i] + row[i + 1:] for row in matrix[1:]])
+    det = determinant(matrix)
+    return det
+
+
+def lu_decomposition(matrix):
+    n = len(matrix)
+    L = [[0.0] * n for _ in range(n)]
+    U = [[0.0] * n for _ in range(n)]
+
+    for i in range(n):
+        L[i][i] = 1.0
+        for j in range(i, n):
+            sum_u = sum(U[k][j] * L[i][k] for k in range(i))
+            U[i][j] = matrix[i][j] - sum_u
+        for j in range(i + 1, n):
+            sum_l = sum(U[k][i] * L[j][k] for k in range(i))
+            L[j][i] = (matrix[j][i] - sum_l) / U[i][i]
+
+    return L, U
+
+
+def determinant(matrix):
+    n = len(matrix)
+    if n != len(matrix[0]):
+        return None  # Matrix is not square
+
+    # Perform LU decomposition
+    L, U = lu_decomposition(matrix)
+
+    # The determinant is the product of the diagonal elements of U
+    det = 1.0
+    for i in range(n):
+        det *= U[i][i]
+
     return det
 
 
