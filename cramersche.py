@@ -46,28 +46,28 @@ def calc_determinant(matrix): # calculate the determinant of the matrix
     det = 0
     # for i in range(len(matrix)): # calculate the determinant with the laplace expansion
     #     det += matrix[0][i] * ma.pow(-1, i) * calc_determinant([row[:i] + row[i + 1:] for row in matrix[1:]])
-    det = determinant(matrix)
+    det = determinant(matrix) # calculate the determinant with the LU decomposition
     return det
 
 
-def lu_decomposition(matrix):
+def lu_decomposition(matrix): # perform the LU decomposition
     n = len(matrix)
     L = [[0.0] * n for _ in range(n)]
     U = [[0.0] * n for _ in range(n)]
 
-    for i in range(n):
+    for i in range(n): # Perform LU decomposition
         L[i][i] = 1.0
-        for j in range(i, n):
+        for j in range(i, n): # calculate the L and U matrix
             sum_u = sum(U[k][j] * L[i][k] for k in range(i))
             U[i][j] = matrix[i][j] - sum_u
-        for j in range(i + 1, n):
+        for j in range(i + 1, n): # calculate the L matrix
             sum_l = sum(U[k][i] * L[j][k] for k in range(i))
             L[j][i] = (matrix[j][i] - sum_l) / U[i][i]
 
     return L, U
 
 
-def determinant(matrix):
+def determinant(matrix): # calculate the determinant of the matrix
     n = len(matrix)
     if n != len(matrix[0]):
         return None  # Matrix is not square
