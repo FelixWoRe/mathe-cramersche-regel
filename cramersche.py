@@ -1,4 +1,3 @@
-import math as ma
 from random import randint
 import copy
 matrix_size = 30
@@ -95,7 +94,7 @@ def generate_matrix(row, column): # generate a matrix with given row and column
 def fill_matrix(matrix): # fill the matrix with random numbers
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
-            matrix[i][j] = randint(0, 10) # fill the matrix with random numbers
+            matrix[i][j] = randint(0, 100000) # fill the matrix with random numbers
     return matrix
 
 
